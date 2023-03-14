@@ -5,7 +5,8 @@
         "internalType": "address",
         "name": "_marketplaceAddrsess",
         "type": "address"
-      }
+      },
+      { "internalType": "string", "name": "__baseURI", "type": "string" }
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
@@ -278,6 +279,13 @@
     ],
     "name": "updateAdmin",
     "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "string", "name": "_uri", "type": "string" }],
+    "name": "updateBaseURI",
+    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },

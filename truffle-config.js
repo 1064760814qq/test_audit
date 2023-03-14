@@ -70,8 +70,8 @@ module.exports = {
           `https://goerli.infura.io/v3/511db41b27f84f4497676adb7905871f`
         ),
       network_id: 5, // Ropsten's id
-      gasLimit: 5500000,
-      gas: 5500000, // Ropsten has a lower block limit than mainnet
+      gasLimit: 8500000,
+      gas: 8500000, // Ropsten has a lower block limit than mainnet
 
       // confirmations: 2, // # of confs to wait between deployments. (default: 0)
       // timeoutBlocks: 200, // # of blocks before a deployment times out  (minimum/default: 50)
@@ -117,9 +117,9 @@ module.exports = {
         // See the solidity docs for advice about optimization and evmVersion
         optimizer: {
           enabled: true,
-          runs: 9999999999,
+          runs: 800,
         },
-        evmVersion: "istanbul",
+        // evmVersion: "byzantium",
       },
     },
   },

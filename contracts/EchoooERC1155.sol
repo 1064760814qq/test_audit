@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.4.22 <0.9.0;
+pragma solidity ^0.8.0;
 
 /**
  * @dev Collection of functions related to the address type
@@ -1093,7 +1093,7 @@ library Counters {
         counter._value = 0;
     }
 }
-contract AlvinERC1155 is ERC1155, ERC2981{
+contract EchoooERC1155 is ERC1155, ERC2981{
 
   using Counters for Counters.Counter;
   Counters.Counter _tokenIds;
@@ -1108,7 +1108,7 @@ contract AlvinERC1155 is ERC1155, ERC2981{
   }
     
    mapping(uint => Tokens) public _tokens; 
-   constructor(address _marketplaceAddrsess) ERC1155("") public{
+   constructor(address _marketplaceAddrsess, string memory _uri_) ERC1155(_uri_) public{
     admin = _msgSender();
     marketplaceAddress = _marketplaceAddrsess;
   }
@@ -1124,7 +1124,6 @@ contract AlvinERC1155 is ERC1155, ERC2981{
     require(_royalty <= 100000, "Alvin1155:Royalty is too high");
     _tokenIds.increment();
     _mint(_creator, _tokenIds.current(), _amount,"",MINT);
-    setApprovalForAll(marketplaceAddress, true);
     _setTokenRoyalty(_tokenIds.current(), _creator, _royalty);
     _tokens[_tokenIds.current()] = Tokens(_creator,_royalty);
     return _tokenIds.current();

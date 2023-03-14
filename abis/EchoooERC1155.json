@@ -5,7 +5,8 @@
         "internalType": "address",
         "name": "_marketplaceAddrsess",
         "type": "address"
-      }
+      },
+      { "internalType": "string", "name": "_uri_", "type": "string" }
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"

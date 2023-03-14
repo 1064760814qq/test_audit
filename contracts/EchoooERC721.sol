@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.4.22 <0.9.0;
+pragma solidity ^0.8.0;
 
 
 /**
@@ -1038,6 +1038,9 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
 
     // Token symbol
     string private _symbol;
+    
+    //Base URI
+    string private _baseURI_;
 
     // Mapping from token ID to owner address
     mapping(uint256 => address) private _owners;
@@ -1054,9 +1057,10 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     /**
      * @dev Initializes the contract by setting a `name` and a `symbol` to the token collection.
      */
-    constructor(string memory name_, string memory symbol_) {
+    constructor(string memory name_, string memory symbol_, string memory _uri) {
         _name = name_;
         _symbol = symbol_;
+        _baseURI_ = _uri;
     }
 
     /**
@@ -1110,13 +1114,16 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
         return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI, tokenId.toString())) : "";
     }
 
+    function setBaseURI(string memory _uri) internal virtual returns(string memory){
+        _baseURI_ = _uri;
+    }
     /**
      * @dev Base URI for computing {tokenURI}. If set, the resulting URI for each
      * token will be the concatenation of the `baseURI` and the `tokenId`. Empty
      * by default, can be overridden in child contracts.
      */
     function _baseURI() internal view virtual returns (string memory) {
-        return "";
+        return _baseURI_;
     }
 
     /**
@@ -1519,7 +1526,7 @@ library Counters {
     }
 }
 
-contract AlvinERC721 is ERC721,ERC2981 {
+contract EchoooERC721 is ERC721,ERC2981 {
 
   using Counters for Counters.Counter;
   using Strings for uint256;
@@ -1537,9 +1544,10 @@ contract AlvinERC721 is ERC721,ERC2981 {
   mapping(uint256 => string) private _tokenURIs;
   mapping(uint => Tokens) public _tokens; 
   
-  constructor(address _marketplaceAddrsess) ERC721("Alvin", "Alvin") public{
+  constructor(address _marketplaceAddrsess,string memory __baseURI) ERC721("Alvin", "Alvin",__baseURI) public{
     admin = _msgSender();
     marketplaceAddress = _marketplaceAddrsess;
+    
   }
   
   modifier _isAdmin{
@@ -1554,7 +1562,6 @@ contract AlvinERC721 is ERC721,ERC2981 {
     _tokenIds.increment();
     _safeMint(_creator, _tokenIds.current(),MINT);
     _setTokenURI(_tokenIds.current(),_tokenURI);
-    setApprovalForAll(marketplaceAddress, true);
     _setTokenRoyalty(_tokenIds.current(), _creator, _royalty);
     _tokens[_tokenIds.current()] = Tokens(_creator,_royalty);
     return _tokenIds.current();
@@ -1588,10 +1595,6 @@ contract AlvinERC721 is ERC721,ERC2981 {
         if (bytes(base).length == 0) {
             return _tokenURI;
         }
-        // If both are set, concatenate the baseURI and tokenURI (via abi.encodePacked).
-        if (bytes(_tokenURI).length > 0) {
-            return string(abi.encodePacked(base, _tokenURI));
-        }
 
         return super.tokenURI(tokenId);
     }
@@ -1606,6 +1609,10 @@ contract AlvinERC721 is ERC721,ERC2981 {
     function _setTokenURI(uint256 tokenId, string memory _tokenURI) internal virtual {
         require(_exists(tokenId), "ERC721URIStorage: URI set of nonexistent token");
         _tokenURIs[tokenId] = _tokenURI;
+    }
+
+    function updateBaseURI(string memory _uri) external _isAdmin{
+        super.setBaseURI(_uri);
     }
 
 }
